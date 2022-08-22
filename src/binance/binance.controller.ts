@@ -15,7 +15,7 @@ export class BinanceController {
   @Get('/currency')
   @ApiResponse({
     status: 200,
-    description: 'The found record',
+    isArray: true,
     type: CurrencyEntity,
   })
   getCurrency(): Observable<CurrencyDto[]> {
@@ -25,7 +25,6 @@ export class BinanceController {
   @ApiOperation({ summary: 'Create request p2p' })
   @ApiResponse({
     status: 200,
-    description: 'The found record',
     type: UserbidEntity,
   })
   @Post('/userbid')

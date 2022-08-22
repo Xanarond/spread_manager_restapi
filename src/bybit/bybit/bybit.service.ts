@@ -9,6 +9,7 @@ import {
   of,
   toArray,
 } from 'rxjs';
+import CurrencyDto from './dto/currency.dto';
 
 enum PayTypes {
   Tinkoff = '75',
@@ -34,9 +35,37 @@ enum Currencies {
 export class BybitService {
   constructor(private httpService: HttpService) {}
 
+  getBybitCurrencies(): Observable<CurrencyDto[]> {
+    const currencies = [
+      'BTCUSDT',
+      'BNBUSDT',
+      'ETHUSDT',
+      'BUSDUSDT',
+      'SHIBUSDT',
+    ];
+    const currencyArr = [];
+    for (const currency in currencies) {
+      const bybitCur = `https://api.bybit.com/spot/quote/v1/ticker/price?symbol=${currencies[currency]}`;
+      currencyArr.push(bybitCur);
+    }
+
+    return of(currencyArr).pipe(
+      mergeMap((proj) => {
+        return proj.map((val) => {
+          return this.httpService.request({ url: val, method: 'GET' }).pipe(
+            map((currency) => {
+              return currency.data.result;
+            }),
+          );
+        });
+      }),
+      combineLatestAll(),
+    );
+  }
+
   postUserBid(
-    amount: number,
     token: string,
+    amount?: number,
   ): Observable<{
     minAmount: any;
     payType: string;
