@@ -80,24 +80,20 @@ export class BybitService {
     tradeType: string;
   }> {
     const body_str = `userId=&tokenId=${token}&currencyId=RUB&payment=62&side=1&size=10&page=1&amount=${amount}`;
-    console.log(body_str);
     return this.httpService
-      .post(
-        'https://api2.bybit.com/spot/api/otc/item/list',
-        { data: body_str },
-        {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Accept-Encoding': 'gzip, deflate, br',
-            Accept: '*/*',
-            Connection: 'keep-alive',
-          },
+      .post('https://api2.bybit.com/spot/api/otc/item/list', body_str, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Accept-Encoding': 'gzip, deflate, br',
+          Accept: '*/*',
+          Connection: 'keep-alive',
         },
-      )
+      })
       .pipe(
         map((response) => {
-          const obj = JSON.parse(response.config.data);
-          const input_str = obj.data.split('&');
+          console.log(response.config.data);
+          // const obj = JSON.parse(response.config.data);
+          const input_str = response.config.data.split('&');
           const payments = Object.entries(PayTypes);
           for (const payment in payments) {
             if (input_str[3].split('=')[1] === payments[payment][1]) {
@@ -165,7 +161,7 @@ export class BybitService {
         return value.map((val) => {
           return this.httpService.post(
             'https://api2.bybit.com/spot/api/otc/item/list',
-            { data: val },
+            val,
             {
               headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -189,10 +185,9 @@ export class BybitService {
     const response$ = requsts$.pipe(
       map((response) => {
         if (response.data.result.items[0] !== undefined) {
-          const request_body = JSON.parse(response.config.data);
+          // const request_body = JSON.parse(response.config.data);
           const payments = Object.entries(PayTypes);
-          const input_str = request_body.data.split('&');
-
+          const input_str = response.config.data.split('&');
           for (const payment in payments) {
             if (input_str[3].split('=')[1] === payments[payment][1]) {
               return {

@@ -14,7 +14,7 @@ export class BinanceBidEntity {
   rows = 10;
 
   @ApiProperty({
-    example: ['Tinkoff'],
+    example: ['TinkoffNew'],
     description: 'Тип платежной системы. Подавать одну в массиве',
   })
   payTypes: any[string] = ['Tinkoff'];
@@ -23,7 +23,7 @@ export class BinanceBidEntity {
     example: ['RU'],
     description: 'Страна. Подавать одну в массиве',
   })
-  countries: any[string] = ['RU'];
+  countries: any[string] = [];
 
   @ApiProperty({
     example: 'merchant' || null,
@@ -47,7 +47,7 @@ export class BinanceBidEntity {
   private _merchantCheck = true;*/
 
   @ApiProperty({ example: 10000, description: 'Сумма для обмена' })
-  transAmount = 1000;
+  transAmount = '';
 
   @ApiProperty({
     example: false,

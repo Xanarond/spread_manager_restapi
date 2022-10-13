@@ -25,8 +25,8 @@ export class BidsReq {
   @IsString()
   tradeType: string;
 
-  @IsInt()
-  transAmount: number;
+  @IsString()
+  transAmount: string;
 
   @IsBoolean()
   proMerchantAds: boolean;

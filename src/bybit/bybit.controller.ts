@@ -3,7 +3,7 @@ import { BybitService } from './bybit.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Observable } from 'rxjs';
 import CurrencyDto from './dto/currency.dto';
-import CurrencyEntity from '../../binance/entities/currency.entity';
+import CurrencyEntity from '../binance/entities/currency.entity';
 import { ApiImplicitQuery } from '@nestjs/swagger/dist/decorators/api-implicit-query.decorator';
 
 @ApiTags('Bybit Requests')

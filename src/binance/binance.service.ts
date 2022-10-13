@@ -29,7 +29,47 @@ export class BinanceService {
     return forkJoin([with_rub, with_usd]).pipe(
       map((result) => {
         return result.map((res) => {
-          return res.data;
+          return res.data.map((value) => {
+            if (value.symbol === 'SHIBUSDT' || value.symbol === 'SHIBRUB') {
+              return {
+                symbol: value.symbol,
+                price: value.price,
+              };
+            } else {
+              return {
+                symbol: value.symbol,
+                price: Math.floor(value.price * 100) / 100,
+              };
+            }
+          });
+        });
+      }),
+    );
+  }
+
+  getCurrencyWithSum(sum: number): Observable<CurrencyDto[]> {
+    const with_rub = this.httpService.get(
+      'https://api.binance.com/api/v3/ticker/price?symbols=["BTCRUB","BNBRUB","ETHRUB","USDTRUB","BUSDRUB","SHIBRUB"]',
+    );
+
+    return with_rub.pipe(
+      map((res) => {
+        return res.data.map((value) => {
+          if (
+            value.symbol === 'USDTRUB' ||
+            value.symbol === 'BUSDRUB' ||
+            value.symbol === 'SHIBRUB'
+          ) {
+            return {
+              symbol: value.symbol,
+              price: (sum / value.price).toFixed(2),
+            };
+          } else {
+            return {
+              symbol: value.symbol,
+              price: (sum / value.price).toFixed(8),
+            };
+          }
         });
       }),
     );
@@ -46,39 +86,25 @@ export class BinanceService {
             asset: adv_obj.asset,
             fiatUnit: adv_obj.fiatUnit,
             price: adv_obj.price,
-            tradableAmount: adv_obj.tradableAmount,
             amountAfterEditing: adv_obj.amountAfterEditing,
             maxSingleTransAmount: adv_obj.maxSingleTransAmount,
             minSingleTransAmount: adv_obj.minSingleTransAmount,
-            nickName: response.data.data[0].advertiser.nickName,
+            tradableAmount: adv_obj.tradableQuantity,
+            /* nickName: response.data.data[0].advertiser.nickName,
             monthOrderCount: response.data.data[0].advertiser.monthOrderCount,
             monthFinishRate:
-              response.data.data[0].advertiser.monthFinishRate * 100,
+              response.data.data[0].advertiser.monthFinishRate * 100, */
           };
         }),
       );
   }
 
-  async postReformatObj(): Promise<
-    Observable<
-      {
-        amountAfterEditing: any;
-        publisherType: any;
-        payType: any;
-        tradableAmount: any;
-        price: any;
-        asset: any;
-        fiatUnit: any;
-        minSingleTransAmount: any;
-        maxSingleTransAmount: any;
-      }[]
-    >
-  > {
+  async postReformatObj(sum: string): Promise<Observable<UserBid[]>> {
     enum Payments {
-      Tinkoff = 'Tinkoff',
+      Tinkoff = 'TinkoffNew',
       QIWI = 'QIWI',
       RUBfiatbalance = 'RUBfiatbalance',
-      YandexMoneyNew = 'YandexMoneyNew',
+      YandexMoney = 'YandexMoneyNew',
     }
 
     enum Assets {
@@ -116,6 +142,9 @@ export class BinanceService {
             Bid.asset = assets[asset];
             Bid.publisherType = pubtype[pub] || null;
             Bid.tradeType = tradetype[type];
+            if (sum !== '') {
+              Bid.transAmount = sum;
+            }
             bids.push(Bid);
           }
         }
@@ -151,14 +180,14 @@ export class BinanceService {
             asset: value.data.data[0].adv.asset,
             fiatUnit: value.data.data[0].adv.fiatUnit,
             price: value.data.data[0].adv.price,
-            tradableAmount: value.data.data[0].adv.tradableAmount,
             amountAfterEditing: value.data.data[0].adv.amountAfterEditing,
             maxSingleTransAmount: value.data.data[0].adv.maxSingleTransAmount,
             minSingleTransAmount: value.data.data[0].adv.minSingleTransAmount,
-            nickName: value.data.data[0].advertiser.nickName,
+            tradableAmount: value.data.data[0].adv.tradableQuantity,
+            /* nickName: value.data.data[0].advertiser.nickName,
             monthOrderCount: value.data.data[0].advertiser.monthOrderCount,
             monthFinishRate:
-              value.data.data[0].advertiser.monthFinishRate * 100,
+              value.data.data[0].advertiser.monthFinishRate * 100,*/
             // request: request_body,
           };
         }
