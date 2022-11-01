@@ -9,8 +9,8 @@ import {
   of,
   toArray,
 } from 'rxjs';
-import CurrencyDto from './dto/currency.dto';
 import { BybitDto } from './dto/bybit.dto';
+import CurrencyDto from '../dto/currency.dto';
 
 enum PayTypes {
   Tinkoff = '75',
@@ -44,7 +44,9 @@ export class BybitService {
       'BUSDUSDT',
       'SHIBUSDT',
     ];
+
     const currencyArr = [];
+
     for (const currency in currencies) {
       const bybitCur = `https://api.bybit.com/spot/quote/v1/ticker/price?symbol=${currencies[currency]}`;
       currencyArr.push(bybitCur);

@@ -9,5 +9,5 @@ export default class CurrencyEntity {
   @ApiProperty({
     description: 'Текущая цена',
   })
-  price: number;
+  price: string;
 }

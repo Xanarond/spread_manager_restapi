@@ -4,6 +4,6 @@ export default class CurrencyDto {
   @IsString()
   symbol: string;
 
-  @IsInt()
+  @IsString()
   price: number;
 }

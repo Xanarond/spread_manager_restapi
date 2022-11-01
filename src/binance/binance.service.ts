@@ -12,7 +12,7 @@ import {
 } from 'rxjs';
 import { BinanceBidEntity } from './entities/bidsreq.entity';
 import UserBid from './dto/userbid.dto';
-import CurrencyDto from './dto/currency.dto';
+import CurrencyDto from '../dto/currency.dto';
 
 @Injectable()
 export class BinanceService {

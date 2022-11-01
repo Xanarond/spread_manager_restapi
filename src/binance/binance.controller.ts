@@ -5,9 +5,9 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { BinanceBidEntity } from './entities/bidsreq.entity';
 import UserbidEntity from './entities/userbid.entity';
 import UserBid from './dto/userbid.dto';
-import CurrencyDto from './dto/currency.dto';
-import CurrencyEntity from './entities/currency.entity';
 import { ApiImplicitQuery } from '@nestjs/swagger/dist/decorators/api-implicit-query.decorator';
+import CurrencyEntity from '../entities/currency.entity';
+import CurrencyDto from '../dto/currency.dto';
 
 @ApiTags('Binance Requests')
 @Controller('binance')

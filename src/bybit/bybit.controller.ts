@@ -2,11 +2,11 @@ import { Controller, Get, Query } from '@nestjs/common';
 import { BybitService } from './bybit.service';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Observable } from 'rxjs';
-import CurrencyDto from './dto/currency.dto';
-import CurrencyEntity from '../binance/entities/currency.entity';
 import { ApiImplicitQuery } from '@nestjs/swagger/dist/decorators/api-implicit-query.decorator';
 import { BybitEntity } from './entities/bybit.entity';
 import { BybitDto } from './dto/bybit.dto';
+import CurrencyEntity from '../entities/currency.entity';
+import CurrencyDto from '../dto/currency.dto';
 
 export enum Currency {
   USDT = 'USDT',
