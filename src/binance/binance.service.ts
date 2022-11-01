@@ -90,6 +90,8 @@ export class BinanceService {
             maxSingleTransAmount: adv_obj.maxSingleTransAmount,
             minSingleTransAmount: adv_obj.minSingleTransAmount,
             tradableAmount: adv_obj.tradableQuantity,
+            tradeType: adv_obj.tradeType,
+            publisherType: adv_obj.publisherType,
             /* nickName: response.data.data[0].advertiser.nickName,
             monthOrderCount: response.data.data[0].advertiser.monthOrderCount,
             monthFinishRate:
@@ -197,7 +199,7 @@ export class BinanceService {
     );
 
     return response$.pipe(
-      map((res) => {
+      map((res: UserBid[]) => {
         return res;
       }),
     );

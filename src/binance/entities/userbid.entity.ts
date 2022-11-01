@@ -1,6 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export default class UserbidEntity {
+  get publisherType(): string {
+    return this._publisherType;
+  }
   get tradableAmount(): number {
     return this._tradableAmount;
   }
@@ -68,6 +71,16 @@ export default class UserbidEntity {
     description: 'Тип сделки',
   })
   private _payType: string;
+
+  @ApiProperty({
+    description: 'Тип сделки мерчант/немерчант',
+  })
+  private _publisherType: string;
+
+  @ApiProperty({
+    description: 'Тип сделки мерчант/немерчант',
+  })
+  private _tradeType: string;
 
   @ApiProperty({
     description: 'Текущая цена покупки/продажи',

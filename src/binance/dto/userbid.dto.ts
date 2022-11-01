@@ -4,6 +4,12 @@ export default class UserBid {
   @IsString()
   payType: string;
 
+  @IsString()
+  tradeType: string;
+
+  @IsString()
+  publisherType: string;
+
   @IsInt()
   amountAfterEditing: number;
 

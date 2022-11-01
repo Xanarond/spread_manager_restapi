@@ -13,6 +13,7 @@ import { ApiImplicitQuery } from '@nestjs/swagger/dist/decorators/api-implicit-q
 @Controller('binance')
 export class BinanceController {
   constructor(private readonly binanceService: BinanceService) {}
+
   @Get('/currency')
   @ApiOperation({ summary: 'Получить актуальный курс валют' })
   @ApiResponse({
@@ -37,12 +38,15 @@ export class BinanceController {
     name: 'sum',
     required: true,
     type: Number,
+    description: 'Минимальная сумма на которую искать позиции сделки:',
   })
   getCurrencyWithSum(@Query('sum') sum = 1000): Observable<CurrencyDto[]> {
     return this.binanceService.getCurrencyWithSum(sum);
   }
 
-  @ApiOperation({ summary: 'Create request p2p' })
+  @ApiOperation({
+    summary: 'Получить информацию о сделке p2p по определенным параметрам',
+  })
   @ApiResponse({
     status: 200,
     type: UserbidEntity,
@@ -52,11 +56,15 @@ export class BinanceController {
     return this.binanceService.postUserBid(Bid);
   }
 
+  @ApiOperation({
+    summary: 'Получить информацию о сделках p2p по определенным параметрам',
+  })
   @Get('/userbids')
   @ApiImplicitQuery({
     name: 'sum',
     required: false,
-    type: Number,
+    type: String,
+    description: 'Минимальная сумма на которую искать позиции сделки:',
   })
   @ApiResponse({
     status: 200,

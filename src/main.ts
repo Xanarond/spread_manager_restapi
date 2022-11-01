@@ -5,6 +5,7 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+require('dotenv').config();
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -18,6 +19,13 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
-  await app.listen(3000, 'localhost');
+
+  const corsOptions = {
+    origin: '*',
+    optionsSuccessStatus: 200,
+  };
+  app.enableCors(corsOptions);
+
+  await app.listen(process.env.SERVER_PORT, process.env.HTTPHOST);
 }
 bootstrap();

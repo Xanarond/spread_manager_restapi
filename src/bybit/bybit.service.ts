@@ -10,6 +10,7 @@ import {
   toArray,
 } from 'rxjs';
 import CurrencyDto from './dto/currency.dto';
+import { BybitDto } from './dto/bybit.dto';
 
 enum PayTypes {
   Tinkoff = '75',
@@ -63,22 +64,7 @@ export class BybitService {
     );
   }
 
-  postUserBid(
-    token: string,
-    amount?: number,
-  ): Observable<{
-    minAmount: any;
-    payType: string;
-    quantity: any;
-    recentExecuteRate: any;
-    price: any;
-    tokenName: any;
-    currencyId: any;
-    maxAmount: any;
-    recentOrderNum: any;
-    lastQuantity: any;
-    tradeType: string;
-  }> {
+  postUserBid(token: string, amount?: number): Observable<BybitDto> {
     const body_str = `userId=&tokenId=${token}&currencyId=RUB&payment=62&side=1&size=10&page=1&amount=${amount}`;
     return this.httpService
       .post('https://api2.bybit.com/spot/api/otc/item/list', body_str, {
@@ -118,21 +104,7 @@ export class BybitService {
       );
   }
 
-  getUserBids(): Observable<
-    {
-      minAmount: any;
-      payType: string;
-      quantity: any;
-      recentExecuteRate: any;
-      price: any;
-      tokenName: any;
-      currencyId: any;
-      maxAmount: any;
-      recentOrderNum: any;
-      lastQuantity: any;
-      tradeType: string;
-    }[]
-  > {
+  getUserBids(sum: string): Observable<BybitDto[]> {
     const tradetype = {
       BUY: 0,
       SELL: 1,
@@ -142,14 +114,16 @@ export class BybitService {
     const assets = Object.values(Assets);
     const currencies = Object.values(Currencies);
     const tradetypes = Object.values(tradetype);
-    const amounth = 1000;
 
+    if (sum !== '') {
+      sum = '1000';
+    }
     const bodyArr = [];
     for (const pay in payments) {
       for (const asset in assets) {
         for (const currency in currencies) {
           for (const tradetype in tradetypes) {
-            const body_str = `userId=&tokenId=${assets[asset]}&currencyId=${currencies[currency]}&payment=${payments[pay]}&side=${tradetypes[tradetype]}&size=10&page=1&amount=${amounth}`;
+            const body_str = `userId=&tokenId=${assets[asset]}&currencyId=${currencies[currency]}&payment=${payments[pay]}&side=${tradetypes[tradetype]}&size=10&page=1&amount=${sum}`;
             bodyArr.push(body_str);
           }
         }
@@ -214,7 +188,7 @@ export class BybitService {
     );
 
     return response$.pipe(
-      map((res) => {
+      map((res: BybitDto[]) => {
         return res;
       }),
     );

@@ -1,16 +1,26 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { BybitService } from './bybit.service';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Observable } from 'rxjs';
 import CurrencyDto from './dto/currency.dto';
 import CurrencyEntity from '../binance/entities/currency.entity';
 import { ApiImplicitQuery } from '@nestjs/swagger/dist/decorators/api-implicit-query.decorator';
+import { BybitEntity } from './entities/bybit.entity';
+import { BybitDto } from './dto/bybit.dto';
+
+export enum Currency {
+  USDT = 'USDT',
+  BTC = 'BTC',
+  ETH = 'ETH',
+  USDC = 'USDC',
+}
 
 @ApiTags('Bybit Requests')
 @Controller('bybit')
 export class BybitController {
   constructor(private readonly bybitService: BybitService) {}
 
+  @ApiOperation({ summary: 'Получить актуальный курс валют' })
   @Get('/currency')
   @ApiResponse({
     status: 200,
@@ -21,47 +31,44 @@ export class BybitController {
     return this.bybitService.getBybitCurrencies();
   }
 
+  @ApiOperation({
+    summary: 'Получить информацию о сделке p2p по определенным параметрам',
+  })
   @Get('/userbid')
+  @ApiQuery({ name: 'token', enum: Currency })
   @ApiImplicitQuery({
     name: 'amount',
     required: false,
     type: Number,
+    description: 'Минимальная сумма на которую искать позиции сделки:',
+  })
+  @ApiResponse({
+    status: 200,
+    type: BybitEntity,
   })
   postUserBid(
     @Query('token') token: string,
     @Query('amount') amount = 1000,
-  ): Observable<{
-    minAmount: any;
-    payType: string;
-    quantity: any;
-    recentExecuteRate: any;
-    price: any;
-    tokenName: any;
-    currencyId: any;
-    maxAmount: any;
-    recentOrderNum: any;
-    lastQuantity: any;
-    tradeType: string;
-  }> {
+  ): Observable<BybitDto> {
     return this.bybitService.postUserBid(token, amount);
   }
 
+  @ApiOperation({
+    summary: 'Получить информацию о сделках p2p по определенным параметрам',
+  })
   @Get('/userbids')
-  getUserBids(): Observable<
-    {
-      minAmount: any;
-      payType: string;
-      quantity: any;
-      recentExecuteRate: any;
-      price: any;
-      tokenName: any;
-      currencyId: any;
-      maxAmount: any;
-      recentOrderNum: any;
-      lastQuantity: any;
-      tradeType: string;
-    }[]
-  > {
-    return this.bybitService.getUserBids();
+  @ApiImplicitQuery({
+    name: 'sum',
+    required: false,
+    type: String,
+    description: 'Минимальная сумма на которую искать позиции сделки:',
+  })
+  @ApiResponse({
+    status: 200,
+    type: BybitEntity,
+    isArray: true,
+  })
+  getUserBids(@Query('sum') sum = ''): Observable<BybitDto[]> {
+    return this.bybitService.getUserBids(sum);
   }
 }
