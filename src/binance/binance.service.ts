@@ -33,7 +33,7 @@ export class BinanceService {
             if (value.symbol === 'SHIBUSDT' || value.symbol === 'SHIBRUB') {
               return {
                 symbol: value.symbol,
-                price: value.price,
+                price: parseFloat(value.price),
               };
             } else {
               return {
@@ -62,12 +62,12 @@ export class BinanceService {
           ) {
             return {
               symbol: value.symbol,
-              price: (sum / value.price).toFixed(2),
+              price: parseFloat((sum / value.price).toFixed(2)),
             };
           } else {
             return {
               symbol: value.symbol,
-              price: (sum / value.price).toFixed(8),
+              price: parseFloat((sum / value.price).toFixed(8)),
             };
           }
         });
@@ -85,11 +85,11 @@ export class BinanceService {
             payType: Bid.payTypes[0],
             asset: adv_obj.asset,
             fiatUnit: adv_obj.fiatUnit,
-            price: adv_obj.price,
+            price: parseFloat(adv_obj.price),
             amountAfterEditing: adv_obj.amountAfterEditing,
-            maxSingleTransAmount: adv_obj.maxSingleTransAmount,
-            minSingleTransAmount: adv_obj.minSingleTransAmount,
-            tradableAmount: adv_obj.tradableQuantity,
+            maxSingleTransAmount: parseFloat(adv_obj.maxSingleTransAmount),
+            minSingleTransAmount: parseFloat(adv_obj.minSingleTransAmount),
+            tradableAmount: parseFloat(adv_obj.tradableQuantity),
             tradeType: adv_obj.tradeType,
             publisherType: adv_obj.publisherType,
             /* nickName: response.data.data[0].advertiser.nickName,
@@ -181,11 +181,15 @@ export class BinanceService {
             publisherType: request_body.publisherType,
             asset: value.data.data[0].adv.asset,
             fiatUnit: value.data.data[0].adv.fiatUnit,
-            price: value.data.data[0].adv.price,
+            price: parseFloat(value.data.data[0].adv.price),
             amountAfterEditing: value.data.data[0].adv.amountAfterEditing,
-            maxSingleTransAmount: value.data.data[0].adv.maxSingleTransAmount,
-            minSingleTransAmount: value.data.data[0].adv.minSingleTransAmount,
-            tradableAmount: value.data.data[0].adv.tradableQuantity,
+            maxSingleTransAmount: parseFloat(
+              value.data.data[0].adv.maxSingleTransAmount,
+            ),
+            minSingleTransAmount: parseFloat(
+              value.data.data[0].adv.minSingleTransAmount,
+            ),
+            tradableAmount: parseFloat(value.data.data[0].adv.tradableQuantity),
             /* nickName: value.data.data[0].advertiser.nickName,
             monthOrderCount: value.data.data[0].advertiser.monthOrderCount,
             monthFinishRate:

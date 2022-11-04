@@ -57,7 +57,10 @@ export class BybitService {
         return proj.map((val) => {
           return this.httpService.request({ url: val, method: 'GET' }).pipe(
             map((currency) => {
-              return currency.data.result;
+              return {
+                symbol: currency.data.result.symbol,
+                price: parseFloat(currency.data.result.price),
+              };
             }),
           );
         });
@@ -91,11 +94,13 @@ export class BybitService {
                   response.data.result.items[0].side === 1 ? 'BUY' : 'SELL',
                 tokenName: response.data.result.items[0].tokenName,
                 currencyId: response.data.result.items[0].currencyId,
-                price: response.data.result.items[0].price,
-                quantity: response.data.result.items[0].quantity,
-                lastQuantity: response.data.result.items[0].lastQuantity,
-                minAmount: response.data.result.items[0].minAmount,
-                maxAmount: response.data.result.items[0].maxAmount,
+                price: parseFloat(response.data.result.items[0].price),
+                quantity: parseFloat(response.data.result.items[0].quantity),
+                lastQuantity: parseFloat(
+                  response.data.result.items[0].lastQuantity,
+                ),
+                minAmount: parseFloat(response.data.result.items[0].minAmount),
+                maxAmount: parseFloat(response.data.result.items[0].maxAmount),
                 recentOrderNum: response.data.result.items[0].recentOrderNum,
                 recentExecuteRate:
                   response.data.result.items[0].recentExecuteRate,
@@ -172,11 +177,13 @@ export class BybitService {
                   response.data.result.items[0].side === 1 ? 'BUY' : 'SELL',
                 tokenName: response.data.result.items[0].tokenName,
                 currencyId: response.data.result.items[0].currencyId,
-                price: response.data.result.items[0].price,
-                quantity: response.data.result.items[0].quantity,
-                lastQuantity: response.data.result.items[0].lastQuantity,
-                minAmount: response.data.result.items[0].minAmount,
-                maxAmount: response.data.result.items[0].maxAmount,
+                price: parseFloat(response.data.result.items[0].price),
+                quantity: parseFloat(response.data.result.items[0].quantity),
+                lastQuantity: parseFloat(
+                  response.data.result.items[0].lastQuantity,
+                ),
+                minAmount: parseFloat(response.data.result.items[0].minAmount),
+                maxAmount: parseFloat(response.data.result.items[0].maxAmount),
                 recentOrderNum: response.data.result.items[0].recentOrderNum,
                 recentExecuteRate:
                   response.data.result.items[0].recentExecuteRate,

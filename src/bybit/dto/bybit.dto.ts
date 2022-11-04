@@ -7,14 +7,14 @@ export class BybitDto {
   @IsInt()
   minAmount: number;
 
-  @IsString()
-  quantity: string;
+  @IsInt()
+  quantity: number;
 
   @IsInt()
   recentExecuteRate: number;
 
-  @IsString()
-  price: string;
+  @IsInt()
+  price: number;
 
   @IsString()
   tokenName: string;
@@ -22,14 +22,14 @@ export class BybitDto {
   @IsString()
   currencyId: string;
 
-  @IsString()
-  maxAmount: string;
+  @IsInt()
+  maxAmount: number;
 
   @IsInt()
   recentOrderNum: number;
 
-  @IsString()
-  lastQuantity: string;
+  @IsInt()
+  lastQuantity: number;
 
   @IsString()
   tradeType: string;

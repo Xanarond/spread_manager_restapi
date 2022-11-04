@@ -7,10 +7,10 @@ export class BybitEntity {
   get tradeType(): string {
     return this._tradeType;
   }
-  get lastQuantity(): string {
+  get lastQuantity(): number {
     return this._lastQuantity;
   }
-  get maxAmount(): string {
+  get maxAmount(): number {
     return this._maxAmount;
   }
   get currencyId(): string {
@@ -19,13 +19,13 @@ export class BybitEntity {
   get tokenName(): string {
     return this._tokenName;
   }
-  get price(): string {
+  get price(): number {
     return this._price;
   }
   get recentExecuteRate(): number {
     return this._recentExecuteRate;
   }
-  get quantity(): string {
+  get quantity(): number {
     return this._quantity;
   }
   get payType(): string {
@@ -48,7 +48,7 @@ export class BybitEntity {
   @ApiProperty({
     description: 'Доступное количество для обмена',
   })
-  private _quantity: string;
+  private _quantity: number;
 
   @ApiProperty({
     description: 'Текущий рейтинг обмена пользователя',
@@ -58,7 +58,7 @@ export class BybitEntity {
   @ApiProperty({
     description: 'Текущая цена покупки/продажи',
   })
-  private _price: string;
+  private _price: number;
 
   @ApiProperty({
     description: 'Валюта обмена',
@@ -73,7 +73,7 @@ export class BybitEntity {
   @ApiProperty({
     description: 'Максимальная сумма для совершения обмена',
   })
-  private _maxAmount: string;
+  private _maxAmount: number;
 
   @ApiProperty({
     description: 'Количество совершенных сделок пользователем',
@@ -83,7 +83,7 @@ export class BybitEntity {
   @ApiProperty({
     description: 'Последний доступный обьем сделок',
   })
-  private _lastQuantity: string;
+  private _lastQuantity: number;
 
   @ApiProperty({
     description: 'Тип сделки',
