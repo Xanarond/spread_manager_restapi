@@ -4,7 +4,14 @@ import { BinanceService } from './binance.service';
 import { HttpModule } from '@nestjs/axios';
 
 @Module({
-  imports: [HttpModule],
+  imports: [
+    HttpModule.registerAsync({
+      useFactory: () => ({
+        timeout: 10000,
+        maxRedirects: 5,
+      }),
+    }),
+  ],
   controllers: [BinanceController],
   providers: [BinanceService],
 })

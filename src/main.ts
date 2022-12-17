@@ -5,7 +5,9 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-require('dotenv').config();
+import { config } from 'dotenv';
+
+config();
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(

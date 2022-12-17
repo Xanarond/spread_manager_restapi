@@ -4,7 +4,14 @@ import { BybitController } from './bybit.controller';
 import { HttpModule } from '@nestjs/axios';
 
 @Module({
-  imports: [HttpModule],
+  imports: [
+    HttpModule.registerAsync({
+      useFactory: () => ({
+        timeout: 10000,
+        maxRedirects: 5,
+      }),
+    }),
+  ],
   providers: [BybitService],
   controllers: [BybitController],
 })
