@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { OkxController } from './okx.controller';
 import { OkxService } from './okx.service';
-import { HttpService } from '@nestjs/axios';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
-  imports: [HttpService],
+  imports: [HttpModule],
   controllers: [OkxController],
   providers: [OkxService],
 })

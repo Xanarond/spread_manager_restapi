@@ -128,19 +128,19 @@ export class BinanceService {
       SELL = 'SELL',
     }
 
-    const payments = Object.values(Payments);
+    const PAYMENTS = Object.values(Payments);
     const assets = Object.values(Assets);
     const pubtype = Object.values(PubType);
     const tradetype = Object.values(TradeType);
 
     const bids = [];
 
-    for (const pay in payments) {
+    for (const pay in PAYMENTS) {
       for (const asset in assets) {
         for (const pub in pubtype) {
           for (const type in tradetype) {
             const Bid = new BinanceBidEntity();
-            Bid.payTypes = [payments[pay]];
+            Bid.payTypes = [PAYMENTS[pay]];
             Bid.asset = assets[asset];
             Bid.publisherType = pubtype[pub] || null;
             Bid.tradeType = tradetype[type];
@@ -159,6 +159,15 @@ export class BinanceService {
           return this.httpService.post(
             'https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search',
             val,
+            {
+              headers: {
+                'User-agent':
+                  'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
+                'Accept-Encoding': 'gzip, deflate, br',
+                Accept: '*/*',
+                Connection: 'keep-alive',
+              },
+            },
           );
         });
       }),

@@ -7,7 +7,7 @@ import { BybitModule } from './bybit/bybit.module';
 import { OkxModule } from './okx/okx.module';
 
 @Module({
-  imports: [BinanceModule, BybitModule, KucoinModule],
+  imports: [BinanceModule, BybitModule, KucoinModule, OkxModule],
   controllers: [AppController],
   providers: [AppService],
 })
