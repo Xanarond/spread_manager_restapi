@@ -1,73 +1,137 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+Проект взаимодействует с API Binance, Bybit, Kucoin, OKX  для получения информации о криптовалютных курсах, а также для получения информации в рамках P2P-сделок. Давайте разберемся с основными аспектами и функционалом проекта на примере Binance:
+### Структура проекта:
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+1. **BinanceController:**
+		- Контроллер, обрабатывающий HTTP-запросы, поступающие на эндпоинты `/binance`.
+		- Предоставляет методы для получения курсов валют, поиска сделок P2P, и других операций.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
-
-```bash
-$ npm install
+```typescript
+@Controller('binance')
+export class BinanceController {
+  // ...
+}
 ```
 
-## Running the app
+2. **BinanceService:**
+		- Сервис, содержащий бизнес-логику приложения, включая взаимодействие с Binance API.
+		- Предоставляет методы для получения курсов валют, выполнения поиска сделок P2P и других операций.
 
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+```typescript
+@Injectable()
+export class BinanceService {
+  // ...
+}
 ```
 
-## Test
+3. **Entities и DTO:**
+		- В коде присутствуют сущности (Entities) и Data Transfer Objects (DTO), такие как `BinanceBidEntity`, `UserBid`, `CurrencyDto`, которые определяют структуру данных, используемую в проекте.
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+```typescript
+import { BinanceBidEntity } from './entities/bidsreq.entity';
+import UserBid from './dto/userbid.dto';
+import CurrencyDto from '../dto/currency.dto';
 ```
 
-## Support
+### Основной функционал:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+1. **Получение курсов валют:**
+		- `getCurrency()` метод в `BinanceService` выполняет запрос к API Binance для получения актуальных курсов валют.
 
-## Stay in touch
+```typescript
+getCurrency(): Observable<CurrencyDto[]> {
+  // ...
+}
+```
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+2. **Поиск сделок P2P:**
+		- `postUserBid` метод в `BinanceService` отправляет POST-запрос к Binance API для поиска сделок P2P на основе переданных данных.
 
-## License
+```typescript
+postUserBid(Bid: BinanceBidEntity): Observable<UserBid> {
+  // ...
+}
+```
 
-Nest is [MIT licensed](LICENSE).
+3. **Генерация запросов для различных вариантов параметров:**
+		- `postReformatObj` метод в `BinanceService` генерирует массив запросов для различных комбинаций параметров.
+
+```typescript
+async postReformatObj(sum: string): Promise<Observable<UserBid[]>> {
+  // ...
+}
+```
+
+### Дополнительные аспекты:
+
+- Весь проект использует TypeScript, что улучшает читаемость кода и предоставляет статическую типизацию.
+- Взаимодействие с API осуществляется с использованием `HttpService` из NestJS.
+- Весь код описан с использованием декораторов и функций из библиотеки RxJS для удобства работы с асинхронными операциями.
+- Проект также включает в себя документацию к API с использованием Swagger декораторов.
+- Пример развернутого приложения находится на http://92.63.98.23:8000/docs/
+
+---
+
+The project interacts with the APIs of Binance, Bybit, Kucoin, OKX to obtain information about cryptocurrency rates, as well as to obtain information as part of P2P transactions. Let's look at the main aspects and functionality of the project using Binance as an example:
+
+### Project structure:
+
+1. **BinanceController:**
+	- is a controller that processes HTTP requests received at the `/binance` endpoints.
+	- Provides methods for obtaining exchange rates, searching for P2P transactions, and other operations.
+
+```typescript
+@Controller('binance')
+export class BinanceController {
+  // ...
+}
+```
+
+2. **BinanceService:**
+- A service containing the business logic of the application, including interaction with the Binance API.
+- Provides methods for obtaining exchange rates, searching for P2P transactions and other operations.
+
+```typescript
+@Injectable()
+export class BinanceService {
+  // ...
+}
+```
+
+3. **Entities and DTO:**
+- The code contains Entities and data transfer objects (DTO), such as "BinanceBidEntity", "UserBid", "CurrencyDto", which are used to structure the data that is used in the project.
+
+```typescript
+imports {BinanceBidEntity } from './entities/bidsreq.entity';
+imports a usbid from './dto/usbid.dto';
+imports CurrencyDto from '../dto/currency.dto';
+```
+### Basic functionality:
+
+1. **Getting exchange rates:**
+- `getCurrency()` the method in `BinanceService` executes a request to the Binance API to get the current exchange rates.
+```typescript
+getCurrency(): Observable<CurrencyDto[]> {
+  // ...
+}
+```
+
+2. **P2P Transaction Search:**
+- The `postUserBid` method in `BinanceService` sends a POST request to the Binance API to search for P2P transactions based on the transmitted data.
+```typescript
+postUserBid(Bid: BinanceBidEntity): Observable<UserBid> {
+  // ...
+}
+```
+
+3. **Generating queries for various parameter options:**
+	- The `postReformatObj` method in `BinanceService` generates an array of requests for various combinations of parameters.
+```typescript
+async postReformatObj(sum: string): Promise<Observable<UserBid[]>> {
+  // ...
+}
+```
+### Additional aspects:
+- The whole project uses TypeScript, which improves code readability and provides static typing.
+- The entire code is described using decorators and functions from the RxJS library for ease of working with asynchronous operations.
+- The project also includes API documentation using Swagger decorators.
+- An example of a deployed application is on http://92.63.98.23:8000/docs/
